@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Bot | Karyawan Digital & Data Tempat</title>
+<style>
+  :root {
+    --bg: #ffffff; --soft: #f5f7fb; --text: #1a2233; --muted: #5b6577;
+    --primary: #2563eb; --primary-dark: #1d4ed8; --border: #e3e8f0;
+    --red: #dc2626; --red-bg: #fef2f2; --green: #16a34a; --green-bg: #f0fdf4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  section { padding: 64px 20px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h2 { font-size: 1.8rem; text-align: center; margin-bottom: 8px; }
+  .sub { text-align: center; color: var(--muted); margin-bottom: 36px; }
+
+  /* HERO */
+  .hero { text-align: center; background: linear-gradient(180deg, #eef3ff 0%, #ffffff 100%); padding-top: 80px; }
+  .avatar { width: 96px; height: 96px; margin: 0 auto 18px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 3rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37,99,235,.3); }
+  .badge { display: inline-block; padding: 6px 16px; border-radius: 999px; background: var(--green-bg); color: var(--green); border: 1px solid #bbf7d0; font-size: .9rem; font-weight: 600; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(22,163,74,.35); } 50% { box-shadow: 0 0 0 10px rgba(22,163,74,0); } }
+  .hero h1 { font-size: 2.6rem; margin: 18px 0 10px; }
+  .hero p { max-width: 560px; margin: 0 auto 24px; color: var(--muted); font-size: 1.1rem; }
+
+  /* BUTTONS */
+  .btn { display: inline-block; padding: 13px 28px; border-radius: 10px; background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; border: none; cursor: pointer; font-size: 1rem; transition: .2s; }
+  .btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,.3); }
+
+  /* PROBLEM & SOLUTION */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .col { border-radius: 14px; padding: 26px; border: 1px solid var(--border); }
+  .col h3 { margin-bottom: 14px; font-size: 1.25rem; }
+  .col ul { list-style: none; }
+  .col li { padding: 10px 0 10px 30px; position: relative; border-bottom: 1px dashed rgba(0,0,0,.08); }
+  .col li:last-child { border-bottom: none; }
+  .col li::before { position: absolute; left: 0; top: 10px; }
+  .chaos { background: var(--red-bg); border-color: #fecaca; }
+  .chaos h3 { color: var(--red); }
+  .chaos li::before { content: "❌"; }
+  .solution { background: var(--green-bg); border-color: #bbf7d0; }
+  .solution h3 { color: var(--green); }
+  .solution li::before { content: "✅"; }
+
+  /* CAPABILITIES */
+  .caps { background: var(--soft); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: .2s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(26,34,51,.08); }
+  .card .ico { font-size: 2rem; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: #eef3ff; border-radius: 12px; margin-bottom: 14px; }
+  .card h3 { margin-bottom: 6px; font-size: 1.1rem; }
+  .card p { color: var(--muted); font-size: .95rem; }
+
+  /* PLACES TABLE SECTION */
+  .table-container { width: 100%; overflow-x: auto; margin-top: 20px; border-radius: 12px; border: 1px solid var(--border); background: #fff; }
+  table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; }
+  th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  th { background: var(--soft); font-weight: 600; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  /* SIMULATION */
+  .sim { max-width: 560px; margin: 0 auto; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 12px 32px rgba(26,34,51,.08); }
+  .sim-head { background: var(--primary); color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #4ade80; }
+  .chat { height: 340px; overflow-y: auto; padding: 18px; background: var(--soft); display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: .93rem; animation: pop .3s ease; white-space: pre-line; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .msg.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.bot { align-self: flex-start; background: #fff; border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .typing { display: flex; gap: 4px; padding: 14px; }
+  .typing span { width: 7px; height: 7px; background: #94a3b8; border-radius: 50%; animation: blink 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+  .hint { color: var(--muted); text-align: center; font-size: .9rem; margin: auto; }
+  .scenarios { display: flex; gap: 8px; padding: 14px; background: #fff; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .scenarios button { flex: 1; min-width: 140px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--primary); background: #fff; color: var(--primary); font-weight: 600; cursor: pointer; font-size: .88rem; transition: .2s; }
+  .scenarios button:hover { background: var(--primary); color: #fff; }
+  .scenarios button:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* FOOTER */
+  footer { background: #0f172a; color: #cbd5e1; text-align: center; padding: 64px 20px 32px; }
+  footer h2 { color: #fff; }
+  footer .sub { color: #94a3b8; }
+  footer .btn { font-size: 1.1rem; padding: 16px 38px; background: #22c55e; box-shadow: 0 8px 24px rgba(34,197,94,.35); }
+  footer .btn:hover { background: #16a34a; }
+  .credit { margin-top: 48px; font-size: .85rem; color: #64748b; }
+
+  @media (max-width: 760px) {
+    .compare, .grid3 { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    section { padding: 48px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="avatar">🤖</div>
+    <span class="badge">🟢 Status: Active &amp; Ready 24/7</span>
+    <h1>Personal Bot</h1>
+    <p>Asisten digital yang meringkas rapat, mencatat, dan mengingatkan jadwal kegiatan Anda, sehingga Anda bisa fokus pada hal yang penting.</p>
+    <a href="#simulasi" class="btn">Coba Simulasi ↓</a>
+  </div>
+</section>
+
+<!-- 2. PROBLEM & SOLUTION -->
+<section>
+  <div class="container">
+    <h2>Dari Berantakan Menjadi Terkendali</h2>
+    <p class="sub">Bandingkan hari kerja tanpa dan dengan Personal Bot.</p>
+    <div class="compare">
+      <div class="col chaos">
+        <h3>😵 The Chaos</h3>
+        <ul>
+          <li>Rapat panjang sulit diingat dan diringkas secara manual</li>
+          <li>Catatan kegiatan tercecer di banyak tempat</li>
+          <li>Jadwal yang sudah direncanakan sering terlupa</li>
+        </ul>
+      </div>
+      <div class="col solution">
+        <h3>✨ The Solution</h3>
+        <ul>
+          <li>Rapat di Google Meet diringkas otomatis dan menunggu persetujuan Anda</li>
+          <li>Kegiatan dicatat rapi langsung ke Google Calendar</li>
+          <li>Pengingat dikirim tepat waktu sebelum kegiatan dimulai</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. CORE CAPABILITIES -->
+<section class="caps">
+  <div class="container">
+    <h2>Kemampuan Utama</h2>
+    <p class="sub">Tiga fitur inti yang bekerja untuk Anda.</p>
+    <div class="grid3">
+      <div class="card">
+        <div class="ico">📝</div>
+        <h3>Ringkasan Rapat Google Meet</h3>
+        <p>Menyusun poin penting, keputusan, dan tindak lanjut dari rapat Google Meet Anda.</p>
+      </div>
+      <div class="card">
+        <div class="ico">✋</div>
+        <h3>Persetujuan Anda (Human-in-the-Loop)</h3>
+        <p>Setiap hasil ringkasan diminta persetujuan Anda terlebih dahulu sebelum disimpan atau dibagikan.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📅</div>
+        <h3>Catat &amp; Ingatkan via Google Calendar</h3>
+        <p>Rencana kegiatan dicatat otomatis dan diingatkan sebelum waktunya tiba.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. DATA PLACES SUPABASE -->
+<section>
+  <div class="container">
+    <h2>Direktori Tempat</h2>
+    <p class="sub">Data tempat pilihan yang dimuat langsung dari basis data Supabase.</p>
+    <div class="table-container">
+      <table id="places">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Kota</th>
+            <th>Telepon</th>
+            <th>Maps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--muted);">Memuat data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 5. INTERACTIVE SIMULATION -->
+<section id="simulasi">
+  <div class="container">
+    <h2>Simulasi Interaktif</h2>
+    <p class="sub">Pilih skenario dan lihat Personal Bot bekerja.</p>
+    <div class="sim">
+      <div class="sim-head"><span class="dot"></span> Personal Bot · Online</div>
+      <div class="chat" id="chat">
+        <p class="hint" id="hint">👇 Klik salah satu skenario di bawah untuk memulai percakapan.</p>
+      </div>
+      <div class="scenarios">
+        <button data-s="rapat">📝 Ringkas Rapat</button>
+        <button data-s="catat">🗓️ Catat Kegiatan</button>
+        <button data-s="ingat">⏰ Pengingat Jadwal</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FOOTER & CTA -->
+<footer>
+  <div class="container">
+    <h2>Tertarik Punya Asisten Seperti Ini?</h2>
+    <p class="sub">Hubungi saya dan mari diskusikan kebutuhan Anda.</p>
+    <a class="btn" href="https://wa.me/628889999" target="_blank" rel="noopener">💬 Hubungi via WhatsApp</a>
+    <p class="credit">Built with AI · AI Builder Bootcamp Showcase</p>
+  </div>
+</footer>
+
+<script>
+  // Script untuk memuat data dari Supabase
+  const SUPABASE_URL = 'https://mzyhvubvutcbziomuwwx.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_r0jT5Q96nPZI8s-eSbS2JA_oqkfogIL';
+
+  async function loadPlaces() {
+    const tbody = document.querySelector('#places tbody');
+    try {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/places?select=*&order=reviews_count.desc.nullslast&limit=100',
+        { headers: { apikey: SUPABASE_KEY } }
+      );
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const rows = await res.json();
+
+      tbody.replaceChildren();
+      for (const p of rows) {
+        const tr = document.createElement('tr');
+        for (const v of [p.title, p.category_name, p.total_score, p.reviews_count, p.city, p.phone]) {
+          const td = document.createElement('td');
+          td.textContent = v ?? '-';
+          tr.appendChild(td);
+        }
+        const td = document.createElement('td');
+        if (p.url && p.url.startsWith('https://')) {
+          const a = document.createElement('a');
+          a.href = p.url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Buka';
+          td.appendChild(a);
+        } else {
+          td.textContent = '-';
+        }
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--muted);">Belum ada data.</td></tr>';
+      }
+    } catch (e) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--red);">Gagal memuat data.</td></tr>';
+      console.error(e);
+    }
+  }
+  loadPlaces();
+
+  // Script Simulasi Chatbot
+  const scenarios = {
+    rapat: [
+      { from: 'user', text: 'Tolong ringkas rapat Google Meet tadi pagi.' },
+      { from: 'bot', text: '📝 Ringkasan Rapat Evaluasi Mingguan:\n• Target bulan ini disepakati naik 10%\n• Laporan final dikirim Jumat\n• Rapat lanjutan Senin depan\n\nApakah ringkasan ini sudah sesuai? Balas "Setuju" agar saya simpan.' },
+      { from: 'user', text: 'Setuju ✅' },
+      { from: 'bot', text: '✅ Ringkasan disetujui dan disimpan. Terima kasih!' }
+    ],
+    catat: [
+      { from: 'user', text: 'Catat: presentasi proyek hari Kamis jam 10.00.' },
+      { from: 'bot', text: '🗓️ Siap! Kegiatan sudah ditambahkan ke Google Calendar:\n• Presentasi Proyek\n• Kamis, 10.00 WIB\n\nIngin ditambah pengingat 1 jam sebelumnya?' },
+      { from: 'user', text: 'Ya, tolong.' },
+      { from: 'bot', text: '🔔 Pengingat 1 jam sebelum acara sudah diaktifkan.' }
+    ],
+    ingat: [
+      { from: 'bot', text: '⏰ Pengingat: 30 menit lagi ada "Rapat Tim Marketing" pukul 14.00 WIB.' },
+      { from: 'user', text: 'Terima kasih! Apa agenda hari ini setelah itu?' },
+      { from: 'bot', text: '📅 Agenda Anda hari ini:\n• 14.00 Rapat Tim Marketing\n• 16.00 Review Laporan\n• 19.00 Makan malam keluarga' }
+    ]
+  };
+
+  const chat = document.getElementById('chat');
+  const buttons = document.querySelectorAll('.scenarios button');
+  let runId = 0;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  function addMsg(from, text) {
+    const el = document.createElement('div');
+    el.className = 'msg ' + from;
+    el.textContent = text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function showTyping() {
+    const el = document.createElement('div');
+    el.className = 'msg bot typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+    return el;
+  }
+
+  async function play(key) {
+    const myRun = ++runId;
+    buttons.forEach(b => b.disabled = true);
+    chat.innerHTML = '';
+    for (const step of scenarios[key]) {
+      if (myRun !== runId) return;
+      if (step.from === 'bot') {
+        const t = showTyping();
+        await wait(1300);
+        t.remove();
+      } else {
+        await wait(600);
+      }
+      addMsg(step.from, step.text);
+      await wait(500);
+    }
+    buttons.forEach(b => b.disabled = false);
+  }
+
+  buttons.forEach(b => b.addEventListener('click', () => play(b.dataset.s)));
+</script>
+</body>
+</html>
